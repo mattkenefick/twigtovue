@@ -1,0 +1,16 @@
+{
+    "name": "polymermallard/twigtovue",
+    "type": "library",
+    "description": "Convert Twig templates to Vue templates",
+    "keywords": ["twig", "vue", "symfony", "template", "html"],
+    "homepage": "https://polymermallard.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matt Kenefick",
+            "email": "matt@polymermallard.com",
+            "homepage": "https://www.mattkenefick.com",
+            "role": "Developer"
+        }
+    ],
+}
