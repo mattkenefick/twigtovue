@@ -2,7 +2,13 @@
     "name": "polymermallard/twigtovue",
     "type": "library",
     "description": "Convert Twig templates to Vue templates",
-    "keywords": ["twig", "vue", "symfony", "template", "html"],
+    "keywords": [
+        "twig",
+        "vue",
+        "symfony",
+        "template",
+        "html"
+    ],
     "homepage": "https://polymermallard.com",
     "license": "MIT",
     "authors": [
@@ -13,4 +19,29 @@
             "role": "Developer"
         }
     ],
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0"
+    },
+    "autoload": {
+        "files": [
+            "src/functions.php"
+        ],
+        "psr-4": {
+            "PolymerMallard\\TwigToVue\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PolymerMallard\\TwigToVue\\Test\\": "test"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --verbose src/Tests --testdox"
+    }
 }
