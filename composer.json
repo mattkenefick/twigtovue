@@ -1,5 +1,5 @@
 {
-    "name": "polymermallard/twigtovue",
+    "name": "mattkenefick/twigtovue",
     "type": "library",
     "description": "Convert Twig templates to Vue templates",
     "keywords": [
