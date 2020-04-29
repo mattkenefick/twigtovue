@@ -17,29 +17,29 @@ namespace PolymerMallard\TwigToVue\Util;
 /**
  * String
  */
-class String
+class StringUtility
 {
     /**
      * Get string between two integer points
      *
      * @param  string $str
-     * @param  int $start Starting position
-     * @param  int $end   Ending position
+     * @param  string $start Starting string
+     * @param  string $end   Ending string
      * @return string
      */
-    public static function between(string $str, int $start, int $end): string
+    public static function between(string $str, string $start, string $end): string
     {
-        $string = ' ' . $string;
-        $ini = strpos($string, $start);
+        $str = ' ' . $str;
+        $ini = strpos($str, $start);
 
         if ($ini == 0) {
             return '';
         }
 
         $ini += strlen($start);
-        $len = strpos($string, $end, $ini) - $ini;
+        $len = strpos($str, $end, $ini) - $ini;
 
-        return substr($string, $ini, $len);
+        return substr($str, $ini, $len);
     }
 
     /**

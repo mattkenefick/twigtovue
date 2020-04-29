@@ -1,0 +1,21 @@
+<div>
+    {% for model in collection %}
+        {% if model.title %}
+            <div class="first-loop">
+                {{ model.title }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div>
+    {% for model in collection %}
+        <div class="second-loop">
+        {% if model.title %}
+            <div class="conditional">
+                {{ model.title }}
+            </div>
+        {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+</div>
