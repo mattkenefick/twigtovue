@@ -1,0 +1,23 @@
+<main>
+    <header>
+        <ViewHeaderMain :title="'My Header Title'"></ViewHeaderMain>
+    </header>
+
+    <ul>
+        <li v-for="(model, index) of collection" v-bind:key="index">
+            {{ model.title }}
+        </li>
+    </ul>
+
+    <div>
+        <p>{{ variable }}</p>
+    </div>
+
+    <div>
+        <div class="second-loop" v-for="(model, index) of collection" v-bind:key="index">
+            <div class="conditional" :v-if="model.title">
+                {{ model.title }}
+            </div>
+        </div>
+    </div>
+</main>

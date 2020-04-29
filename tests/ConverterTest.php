@@ -38,9 +38,10 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
         $qp      = $converter->xmlToQueryPath($xml);
         $vueHtml = $converter->queryPathToVue($qp);
 
-        echo $vueHtml;exit;
+        $a = '<div class="second-loop" v-for="(model, index) of collection" v-bind:key="index">';
+        $b = $vueHtml;
 
-        $this->assertStringContainsString('<div></div>', $text);
+        $this->assertStringContainsString($a, $b);
     }
 
     /**
