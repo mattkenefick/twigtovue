@@ -45,6 +45,21 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Tests full convert method
+     *
+     * @return void
+     */
+    public function testFullConvertHelperMethod()
+    {
+        $vueHtml = Converter::convert('data/kitchen-sink.twig');
+
+        $a = '<div class="second-loop" v-for="(model, index) of collection" v-bind:key="index">';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+    }
+
+    /**
      * Get tags
      *
      * @return array

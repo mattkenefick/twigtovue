@@ -62,6 +62,30 @@ class Converter
     ];
 
     /**
+     * Converts a Twig file to VueJS based on filepath
+     *
+     * @param  string $filepath
+     *
+     * @return string
+     */
+    public static function convert(string $filepath) : string
+    {
+        $parser = new Parser();
+        $parser->import($filepath);
+        $tags = $parser->parse();
+
+        $instance = new self();
+
+        // Convert
+        $html    = $instance->twigToHtml($tags, $parser->template);
+        $xml     = $instance->htmlToXml($html);
+        $qp      = $instance->xmlToQueryPath($xml);
+        $vueHtml = $instance->queryPathToVue($qp);
+
+        return $vueHtml;
+    }
+
+    /**
      * Convert
      *
      * The outer array [0] has tags {% foo %}
