@@ -1,6 +1,7 @@
 <main>
     <header>
-        {% include 'view/header/main.twig' with {
+        <!-- Namespaced include -->
+        {% include 'view/' ~ 'header/main.twig' with {
             title: "My Header Title"
         } %}
     </header>
@@ -28,4 +29,11 @@
         </div>
         {% endfor %}
     </div>
+
+
+    <footer>
+        {% include 'view/footer/main.twig' with {
+            title: "My Header Title"
+        } %}
+    </footer>
 </main>

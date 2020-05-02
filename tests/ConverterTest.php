@@ -60,6 +60,25 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Tests full convert method
+     *
+     * @return void
+     */
+    public function testNamespacedIncludes()
+    {
+        $vueHtml = Converter::convert('data/kitchen-sink.twig');
+
+        $a1 = '<HeaderMain';
+        $b1 = $vueHtml;
+
+        $a2 = '<ViewFooterMain';
+        $b2 = $vueHtml;
+
+        $this->assertStringContainsString($a1, $b1);
+        $this->assertStringContainsString($a2, $b2);
+    }
+
+    /**
      * Get tags
      *
      * @return array

@@ -53,8 +53,15 @@ class ConvertInclude
      */
     private static function convertInclude(string $str, string $outerValue, string $attributeValue) : string
     {
+        // Take the latter half of the concatenation to simplify the regex
+        $attributeValue = strpos($attributeValue, ' ~ ') > 1
+            ? substr($attributeValue, strpos($attributeValue, ' ~ '))
+            : $attributeValue;
+
+        // echo $attributeValue;exit;
         // Parse out the filename
-        preg_match('#(\'|\")((.*)\/?)(\.twig)?(\'|\")#U', $attributeValue, $matches);
+        // This new regex asks for the last version
+        preg_match('#(\'|\")((.*)\/?)(\.twig)?(\'|\") (?:%}|with)#U', $attributeValue, $matches);
 
         // Get items within the quotes, "view/inner/foo/bar.twig"
         $matches = array_slice($matches, 2, -2);

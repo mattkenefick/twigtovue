@@ -77,9 +77,9 @@ class Converter
         $instance = new self();
 
         // Convert
-        $html    = $instance->twigToHtml($tags, $parser->template);
-        $xml     = $instance->htmlToXml($html);
-        $qp      = $instance->xmlToQueryPath($xml);
+        $html = $instance->twigToHtml($tags, $parser->template);
+        $xml = $instance->htmlToXml($html);
+        $qp = $instance->xmlToQueryPath($xml);
         $vueHtml = $instance->queryPathToVue($qp);
 
         return $vueHtml;
