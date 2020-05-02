@@ -79,6 +79,23 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Tests automatical remove of duplicate ending names that could be
+     * caused by C# style patterns such as, View/Film/Index/Index.twig
+     * should be ViewFilmIndex
+     *
+     * @return void
+     */
+    public function testSequentialDuplicateEndings()
+    {
+        $vueHtml = Converter::convert('data/kitchen-sink.twig');
+
+        $a = '<ViewFilmIndex ';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+    }
+
+    /**
      * Get tags
      *
      * @return array

@@ -6,6 +6,12 @@
         } %}
     </header>
 
+    <div>
+        {% include 'web/' ~ 'view/film/index/index.twig' with {
+            films: []
+        } %}
+    </div>
+
     <ul>
         {% for model in collection %}
         <li>

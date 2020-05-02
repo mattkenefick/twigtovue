@@ -71,6 +71,11 @@ class ConvertInclude
         // Break up path into words
         $parts = explode('/', $filepath);
 
+        // Check if last two items the same
+        if (count($parts) >= 2 && end($parts) === $parts[count($parts) - 2]) {
+            array_pop($parts);
+        }
+
         // Combine into things like ViewInnerFooBar
         $component = implode('', array_map('ucfirst', $parts));
 
