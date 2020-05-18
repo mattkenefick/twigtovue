@@ -127,7 +127,9 @@ class Converter
      */
     public function htmlToXml(string $html)
     {
-        return $this->xml = @simplexml_load_string($html);
+        $html = html_entity_decode($html, ENT_QUOTES, 'utf-8');
+
+        return $this->xml = @simplexml_load_string($html, 'SimpleXMLElement', LIBXML_NOENT);
     }
 
     /**
