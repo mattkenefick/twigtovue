@@ -52,7 +52,7 @@ class ConvertLoops
             $child->unwrap();
         }
 
-        return $queryPath->html();
+        return $queryPath->html() ?: '';
     }
 
 }

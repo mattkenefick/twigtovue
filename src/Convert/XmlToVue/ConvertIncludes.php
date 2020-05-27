@@ -54,7 +54,7 @@ class ConvertIncludes
             $item->remove();
         }
 
-        return $queryPath->html();
+        return $queryPath->html() ?: '';
     }
 
 }

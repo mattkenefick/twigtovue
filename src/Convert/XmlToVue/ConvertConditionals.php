@@ -49,7 +49,7 @@ class ConvertConditionals
             $child->unwrap();
         }
 
-        return $queryPath->html();
+        return $queryPath->html() ?: '';
     }
 
 }

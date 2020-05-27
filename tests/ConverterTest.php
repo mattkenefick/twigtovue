@@ -30,10 +30,10 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
      */
     public function testTemplateLoadedByConstructor()
     {
-        $tags = $this->getTags();
+        $parser = $this->getTags();
 
         $converter = new Converter();
-        $html    = $converter->twigToHtml($tags, $this->parser->template);
+        $html    = $converter->twigToHtml($parser, $parser->template);
         $xml     = $converter->htmlToXml($html);
         $qp      = $converter->xmlToQueryPath($xml);
         $vueHtml = $converter->queryPathToVue($qp);
@@ -52,6 +52,19 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
         $vueHtml = Converter::convert('data/basic-comments.twig');
 
         $a = '<!-- Test Comment -->';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCommentsByString()
+    {
+        $vueHtml = Converter::convert('<div>{# Test Two #}</div>');
+
+        $a = '<div><!-- Test Two --></div>';
         $b = $vueHtml;
 
         $this->assertStringContainsString($a, $b);
@@ -113,14 +126,14 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    private function getTags()
+    private function getTags() : Parser
     {
         $this->parser = new Parser();
         // $this->parser->import('data/basic-loop-if.twig');
         $this->parser->import('data/basic-include.twig');
         $this->parser->import('data/kitchen-sink.twig');
-        $tags = $this->parser->parse();
+        $this->parser->parse();
 
-        return $tags;
+        return $this->parser;
     }
 }

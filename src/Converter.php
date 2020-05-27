@@ -18,6 +18,12 @@ use PolymerMallard\TwigToVue\Convert\XmlToVue;
 
 /**
  * Converter
+ *
+ * The `tags` class represents converters based on found tags
+ * in the templates.
+ *
+ * The `convert` method parses templates into comments, methods,
+ * tags, and variables then uses those to convert it to a Vue template.
  */
 class Converter
 {
@@ -62,24 +68,33 @@ class Converter
     ];
 
     /**
-     * Converts a Twig file to VueJS based on filepath
+     * Converts a Twig file to VueJS based on filepath or template
      *
-     * @param  string $filepath
+     * @param  string $filepathOrTemplate
      *
      * @return string
      */
-    public static function convert(string $filepath) : string
+    public static function convert(string $filepathOrTemplate): string
     {
-        $parser = new Parser();
-        $parser->import($filepath);
-        $tags = $parser->parse();
+        // Parse out comments, methods, tags, and variables
+        $parser = new Parser($filepathOrTemplate);
+        $parser->parse();
 
+        // Create instance of Converter
         $instance = new self();
 
         // Convert
-        $html = $instance->twigToHtml($tags, $parser->template);
+        // @todo, do we need to pass in everything from parser?
+        $html = $instance->twigToHtml($parser, $parser->template);
+
+        // Convert our HTML tags into generic XML which helps
+        // us find closing tags
         $xml = $instance->htmlToXml($html);
+
+        // Use QueryPath to traverse through XML easier
         $qp = $instance->xmlToQueryPath($xml);
+
+        // Convert our new XML into a Vue template
         $vueHtml = $instance->queryPathToVue($qp);
 
         return $vueHtml;
@@ -91,12 +106,14 @@ class Converter
      * The outer array [0] has tags {% foo %}
      * The inner array [1] has no tags: foo
      *
-     * @param  array $tags
+     * @param  Parser $parser
      *
      * @return void
      */
-    public function twigToHtml(array $tags, string $template = '')
+    public function twigToHtml(Parser $parser, string $template = ''): string
     {
+        $tags = $parser->tags;
+
         $outerItems = $tags[0];
         $innerItems = $tags[1];
         $html = $template;
@@ -112,7 +129,11 @@ class Converter
 
             // Convert tags to HTML elements
             $class = $this->tags[$tag];
-            $html = $class::convert($html, $tag, $outerValue, $params);
+
+            // Run convert on tag class
+            $html = $class
+                ? $class::convert($html, $tag, $outerValue, $params)
+                : $html;
         }
 
         // Convert comments
@@ -164,7 +185,7 @@ class Converter
 
         $html = XmlToVue\ConvertIncludes::convert($queryPath);
 
-        return $queryPath->html();
+        return $queryPath->html() ?: '';
     }
 
     /**

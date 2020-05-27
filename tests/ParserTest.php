@@ -57,7 +57,8 @@ class ParserTest extends \PHPUnit\Framework\TestCase
     {
         $parser = new Parser();
         $parser->import('data/basic-if.twig');
-        $tags = $parser->parse();
+        $parser->parse();
+        $tags = $parser->tags;
 
         $this->assertCount(2, $tags);
     }

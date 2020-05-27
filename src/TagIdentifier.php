@@ -42,12 +42,16 @@ class TagIdentifier
     /**
      * Try to identify tags
      *
+     * The grabbed value is a section, like an innerValue,
+     * which would be "include 'xyz' " as opposed to "{% include 'xyz' %}"
+     *
      * @param  string $value
      *
      * @return string
      */
     public static function identify(string $value) : string
     {
+        // Clean
         $value = self::fixString($value);
 
         foreach (static::$tags as $key => $options) {

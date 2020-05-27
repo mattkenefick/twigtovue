@@ -43,6 +43,8 @@
         }
     },
     "scripts": {
-        "test": "phpunit --verbose tests --testdox"
+        "phpunit": "php vendor/phpunit/phpunit/phpunit",
+        "test": "phpunit --verbose tests --testdox",
+        "test-one": "php vendor/phpunit/phpunit/phpunit tests/Single.php"
     }
 }

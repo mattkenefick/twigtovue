@@ -62,7 +62,7 @@ class ConvertAttributes
             }
         }
 
-        return $queryPath->html();
+        return $queryPath->html() ?: '';
     }
 
 }
