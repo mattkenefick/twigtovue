@@ -45,6 +45,19 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @return void
+     */
+    public function testComments()
+    {
+        $vueHtml = Converter::convert('data/basic-comments.twig');
+
+        $a = '<!-- Test Comment -->';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+    }
+
+    /**
      * Tests full convert method
      *
      * @return void

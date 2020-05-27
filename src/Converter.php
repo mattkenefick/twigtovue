@@ -115,6 +115,9 @@ class Converter
             $html = $class::convert($html, $tag, $outerValue, $params);
         }
 
+        // Convert comments
+        $html = $this->fixComments($html);
+
         return $this->html = $html;
     }
 
@@ -162,6 +165,21 @@ class Converter
         $html = XmlToVue\ConvertIncludes::convert($queryPath);
 
         return $queryPath->html();
+    }
+
+    /**
+     * Replace comments
+     *
+     * @param  string $value
+     *
+     * @return string
+     */
+    private static function fixComments(string $value) : string
+    {
+        $value = str_replace('{#', '<!--', $value);
+        $value = str_replace('#}', '-->', $value);
+        $value = trim($value);
+        return $value;
     }
 
 }
