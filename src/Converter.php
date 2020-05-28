@@ -152,6 +152,7 @@ class Converter
     public function htmlToXml(string $html)
     {
         $html = html_entity_decode($html, ENT_QUOTES, 'utf-8');
+        $html = self::xmlEscape($html);
 
         return $this->xml = @simplexml_load_string($html, 'SimpleXMLElement', LIBXML_NOENT);
     }
@@ -201,6 +202,22 @@ class Converter
         $value = str_replace('#}', '-->', $value);
         $value = trim($value);
         return $value;
+    }
+
+    /**
+     * Escape ampersands and others for the htmlToXml function
+     *
+     * @param  string $string
+     *
+     * @return string
+     */
+    private static function xmlEscape(string $string) : string
+    {
+        return str_replace(
+            array('&'),
+            array('&amp;'),
+            $string
+        );
     }
 
 }
