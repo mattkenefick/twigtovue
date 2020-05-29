@@ -49,7 +49,7 @@ class ConvertAttributes
      */
     public static function convert(object $queryPath) : string
     {
-        $html = urldecode($queryPath->html());
+        $html = @urldecode($queryPath->html()) ?: '';
         $attributes = self::getAttributesFromHtml($html);
 
         // Parse attributes
