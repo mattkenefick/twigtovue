@@ -1,0 +1,43 @@
+
+<div class="view-component-pagination">
+    <!-- First, Double Arrows -->
+    {% if startPage > 2 %}
+        <a class="nav-item" href="#">
+            {{ icon("icon-arrow-left-double") }}
+        </a>
+    {% endif %}
+
+    <!-- Back, Single Arrow -->
+    {% if startPage > 1 %}
+        <a class="nav-item" href="#">
+            {{ icon("icon-arrow-left-single") }}
+        </a>
+    {% endif %}
+
+    <!-- Pagination -->
+    {% for i in startPage..(startPage + pageCount - 1) %}
+        {% if i == currentPage %}
+            <span class="nav-item state-active">
+                {{ i }}
+            </span>
+        {% else %}
+            <a class="nav-item" href="#">
+                {{ i }}
+            </a>
+        {% endif %}
+    {% endfor %}
+
+    <!-- Next, Single Arrow -->
+    {% if startPage < totalPages - 1 %}
+        <a class="nav-item" href="#">
+            {{ icon("icon-arrow-right-single") }}
+        </a>
+    {% endif %}
+
+    <!-- Last, Double Arrows -->
+    {% if startPage < totalPages - 2 %}
+        <a class="nav-item" href="#">
+            {{ icon("icon-arrow-right-double") }}
+        </a>
+    {% endif %}
+</div>

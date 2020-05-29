@@ -24,6 +24,9 @@ class ConvertAttributes
     /**
      * Attributes we'll convert
      *
+     * @todo Why don't we convert all attributes that have tags?
+     *  I'm guessing because it's easier to NOT do it with query path?
+     *
      * @var array
      */
     private static $attributesHtml = [
@@ -31,6 +34,7 @@ class ConvertAttributes
         'href',
         'id',
         'style',
+        'title',
     ];
 
     /**
@@ -45,8 +49,10 @@ class ConvertAttributes
      */
     public static function convert(object $queryPath) : string
     {
-        $attributes = self::$attributesHtml;
+        $html = urldecode($queryPath->html());
+        $attributes = self::getAttributesFromHtml($html);
 
+        // Parse attributes
         foreach ($attributes as $attribute) {
             $elements = $queryPath->find('[' . $attribute . '*="{{"]');
 
@@ -63,6 +69,27 @@ class ConvertAttributes
         }
 
         return $queryPath->html() ?: '';
+    }
+
+    /**
+     * Extract attributes using variables from HTML
+     */
+    private static function getAttributesFromHtml(string $html): array
+    {
+        // $regex = '#\s([a-zA-Z\_]+)=["\'](?={{)["\']#im';
+        $regex = '#\s([a-zA-Z\_]+)=["\'](?={{)[^"\']+["\']#im';
+        // $html = '<a href="{{ header.href }}" title="{{ header.text">{{ header.title }}</a>';
+
+        // Run matching
+        preg_match_all($regex, $html, $matches);
+
+        // Return matches
+        if (count($matches) > 1) {
+            return array_unique($matches[1]);
+        }
+        else {
+            return self::$attributesHtml;
+        }
     }
 
 }

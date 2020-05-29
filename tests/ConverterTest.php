@@ -86,6 +86,21 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @todo
+     *
+     * @return void
+     */
+    public function testMultipleAttributes()
+    {
+        $vueHtml = Converter::convert('data/multiple-attributes.twig');
+
+        $a = '<a :href="header.href" :title="header.text">';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+    }
+
+    /**
      * Tests full convert method
      *
      * @return void
