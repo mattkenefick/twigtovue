@@ -180,11 +180,11 @@ class Converter
     {
         $html = XmlToVue\ConvertAttributes::convert($queryPath);
 
-        $html = XmlToVue\ConvertConditionals::convert($queryPath);
-
         $html = XmlToVue\ConvertLoops::convert($queryPath);
 
         $html = XmlToVue\ConvertIncludes::convert($queryPath);
+
+        $html = XmlToVue\ConvertConditionals::convert($queryPath);
 
         $html = $this->cleanup($queryPath->html() ?: '<!-- Failed to parse -->');
 
