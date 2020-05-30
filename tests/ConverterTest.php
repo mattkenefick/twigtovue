@@ -71,6 +71,29 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @return void
+     */
+    public function testElseIf()
+    {
+        $vueHtml = Converter::convert('data/basic-if-else.twig');
+
+        $a = '<div v-else-if="something == \'something\'">';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+
+        $a = '<p v-else="">';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+
+        $a = '<h3 v-if="foo">';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+    }
+
+    /**
      * Tests full convert method
      *
      * @return void

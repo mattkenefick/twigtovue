@@ -186,7 +186,7 @@ class Converter
 
         $html = XmlToVue\ConvertConditionals::convert($queryPath);
 
-        $html = $this->cleanup($queryPath->html() ?: '<!-- Failed to parse -->');
+        $html = $this->cleanup($queryPath->html() ?: '<!-- Failed to parse in QueryPath -->');
 
         return $html;
     }

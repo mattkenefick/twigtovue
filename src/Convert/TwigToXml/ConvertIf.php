@@ -21,6 +21,13 @@ class ConvertIf
 {
 
     /**
+     * Tag to close
+     *
+     * @var null
+     */
+    private static $previousTag = null;
+
+    /**
      * Convert
      *
      * @param  string $str
@@ -59,7 +66,9 @@ class ConvertIf
      */
     private static function convertIf(string $str, string $outerValue, string $attributeValue) : string
     {
-        $value = str_replace($outerValue, '<if condition="' . $attributeValue . '">', $str);
+        $attributeValue = self::cleanAttributes($attributeValue);
+        $value = str_replace($outerValue, self::getPreviousTag() . '<if condition="' . $attributeValue . '">', $str);
+        self::$previousTag = 'if';
 
         return $value;
     }
@@ -76,7 +85,11 @@ class ConvertIf
      */
     private static function convertElseIf(string $str, string $outerValue, string $attributeValue) : string
     {
+        $attributeValue = self::cleanAttributes($attributeValue);
+        $value = str_replace($outerValue, self::getPreviousTag() . '<elseif condition="' . $attributeValue . '">', $str);
+        self::$previousTag = 'elseif';
 
+        return $value;
     }
 
     /**
@@ -91,7 +104,11 @@ class ConvertIf
      */
     private static function convertElse(string $str, string $outerValue, string $attributeValue) : string
     {
+        $attributeValue = self::cleanAttributes($attributeValue);
+        $value = str_replace($outerValue, self::getPreviousTag() . '<else condition="' . $attributeValue . '">', $str);
+        self::$previousTag = 'else';
 
+        return $value;
     }
 
     /**
@@ -106,9 +123,54 @@ class ConvertIf
      */
     private static function convertEndIf(string $str, string $outerValue, string $attributeValue) : string
     {
-        $value = str_replace($outerValue, '</if>', $str);
+        switch (self::$previousTag) {
+            case 'else':
+                $value = str_replace($outerValue, '</else>', $str);
+                break;
+
+            case 'elseif':
+                $value = str_replace($outerValue, '</elseif>', $str);
+                break;
+
+            default:
+            case 'if':
+                $value = str_replace($outerValue, '</if>', $str);
+                break;
+        }
+
+        // Unset previous tag because block is closed
+        self::$previousTag = null;
 
         return $value;
+    }
+
+    /**
+     * Clean attribute values
+     *
+     * @return string
+     */
+    private static function cleanAttributes(string $attributeValue): string
+    {
+        $attributeValue = str_replace("'", "\'", $attributeValue);
+        $attributeValue = str_replace('"', '\'', $attributeValue);
+
+        return $attributeValue;
+    }
+
+    /**
+     * Return closing tag if necessary
+     *
+     * @return string
+     */
+    private static function getPreviousTag(): string
+    {
+        if (self::$previousTag) {
+            $tag = self::$previousTag;
+            self::$previousTag = null;
+            return '</' . $tag . '>';
+        }
+
+        return '';
     }
 
 }

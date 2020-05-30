@@ -34,8 +34,25 @@ class ConvertConditionals
      */
     public static function convert(object $queryPath) : string
     {
+        self::_convert($queryPath, 'if');
+        self::_convert($queryPath, 'elseif', 'else-if');
+        self::_convert($queryPath, 'else');
+
+        return $queryPath->html() ?: '';
+    }
+
+    /**
+     *
+     */
+    private static function _convert(object $queryPath, string $searchType, string $attributeType = null)
+    {
+        // Convert one type to another
+        if ($attributeType === null) {
+            $attributeType = $searchType;
+        }
+
         // Check for conditionals
-        foreach ($queryPath->find('if') as $item) {
+        foreach ($queryPath->find($searchType) as $item) {
             $condition = $item->attr('condition');
 
             // Get child
@@ -45,13 +62,13 @@ class ConvertConditionals
             $attributeValue = $condition;
             $attributeValue = str_replace([' and ', ' or '], [' && ', ' || '], $attributeValue);
 
-            $child->attr('v-if', $attributeValue);
+            $child->attr('v-' . $attributeType, $attributeValue);
 
             // Remove the for loop
             $child->unwrap();
         }
 
-        return $queryPath->html() ?: '';
+        return $queryPath;
     }
 
 }
