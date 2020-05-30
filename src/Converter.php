@@ -186,7 +186,7 @@ class Converter
 
         $html = XmlToVue\ConvertIncludes::convert($queryPath);
 
-        return $queryPath->html() ?: '';
+        return $queryPath->html() ?: '<!-- Failed to parse -->';
     }
 
     /**

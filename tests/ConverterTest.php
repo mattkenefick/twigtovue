@@ -90,6 +90,21 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
+    public function testIncludeLiteralsOnly()
+    {
+        $vueHtml = Converter::convert('data/include-objects.twig');
+
+        $a = '<ViewComponentPillGroup :header="\'Literal String\'"></ViewComponentPillGroup>';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+    }
+
+    /**
+     * @todo
+     *
+     * @return void
+     */
     public function testMultipleAttributes()
     {
         $vueHtml = Converter::convert('data/multiple-attributes.twig');
@@ -130,7 +145,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     {
         $vueHtml = Converter::convert('data/kitchen-sink.twig');
 
-        $a = '<ViewFilmIndex ';
+        $a = '<ViewFilmIndex>';
         $b = $vueHtml;
 
         $this->assertStringContainsString($a, $b);

@@ -36,7 +36,8 @@ class Single extends \PHPUnit\Framework\TestCase
         // $vueHtml = Converter::convert('<div>{% include "namespace" ~ "ok.twig" %}</div>');
         // $vueHtml = Converter::convert('<div>{# Sup Homie #}</div>');
         // $vueHtml = Converter::convert('data/pagination.twig');
-        $vueHtml = Converter::convert('data/multiple-attributes.twig');
+        // $vueHtml = Converter::convert('data/basic-loop.twig');
+        $vueHtml = Converter::convert('data/include-objects.twig');
 
         $a = '<!-- Test Comment -->';
         $b = $vueHtml;

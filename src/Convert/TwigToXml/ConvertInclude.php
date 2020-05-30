@@ -23,6 +23,15 @@ class ConvertInclude
 {
 
     /**
+     * Prevents us from creating attributes for object references
+     * and only allows literal values, like :property="'String'"
+     * as opposed to :foo="bar"
+     *
+     * @var boolean
+     */
+    public static $onlyLiteralAttributes = true;
+
+    /**
      * Convert
      *
      * @param  string $str
@@ -63,7 +72,7 @@ class ConvertInclude
 
         // Parse out the filename
         // This new regex asks for the last version
-        preg_match('#(\'|\")((.*)\/?)(\.twig)?(\'|\") (?:%}|with)#U', $b, $matches);
+        preg_match('#(\'|\")((.*)\/?)(\.twig)?(\'|\")\s+?(?:%}|with)#U', $b, $matches);
 
         // Get items within the quotes, "view/inner/foo/bar.twig"
         $matches = array_slice($matches, 2, -2);
@@ -81,18 +90,20 @@ class ConvertInclude
         // Combine into things like ViewInnerFooBar
         $component = implode('', array_map('ucfirst', $parts));
 
-        // Attributes
+        // Attributes between with { } brackets
         $attributes = '';
         $with = Util\StringUtility::between($attributeValue, '{', '}');
         preg_match_all('#[ \n](.*)\:(.*)[,\n]#Us', $with, $matches);
 
-        // Iterate
+        // Iterate through matches
         if (count($matches[0])) {
             for ($i = 0; $i < count($matches[0]); $i++) {
                 $key = trim($matches[1][$i]);
                 $value = str_replace('"', '\'', trim($matches[2][$i]));
+                $isLiteral = strpos($value, "'") === 0;
 
-                if ($key && $value) {
+                // If we have a key, value, and it's a literal
+                if ($key && $value && ($isLiteral && self::$onlyLiteralAttributes)) {
                     $attributes .= ':' . $key . '="' . $value . '" ';
                 }
             }
