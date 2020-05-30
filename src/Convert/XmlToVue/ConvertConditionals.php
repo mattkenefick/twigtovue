@@ -43,6 +43,8 @@ class ConvertConditionals
 
             // Apply
             $attributeValue = $condition;
+            $attributeValue = str_replace([' and ', ' or '], [' && ', ' || '], $attributeValue);
+
             $child->attr(':v-if', $attributeValue);
 
             // Remove the for loop

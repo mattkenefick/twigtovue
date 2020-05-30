@@ -7,7 +7,9 @@
     </header>
 
     <div>
-        <h1>Something &copy; </h1>
+        {% if foo and bar %}
+            <h1>Something &copy; </h1>
+        {% endif %}
 
         {% include 'web/' ~ 'view/film/index/index.twig' with {
             films: []

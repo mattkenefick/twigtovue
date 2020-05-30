@@ -59,7 +59,6 @@ class ConvertIf
      */
     private static function convertIf(string $str, string $outerValue, string $attributeValue) : string
     {
-        $attributeValue = str_replace([' and ', ' or '], [' && ', ' || '], $attributeValue);
         $value = str_replace($outerValue, '<if condition="' . $attributeValue . '">', $str);
 
         return $value;

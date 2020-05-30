@@ -186,7 +186,23 @@ class Converter
 
         $html = XmlToVue\ConvertIncludes::convert($queryPath);
 
-        return $queryPath->html() ?: '<!-- Failed to parse -->';
+        $html = $this->cleanup($queryPath->html() ?: '<!-- Failed to parse -->');
+
+        return $html;
+    }
+
+    /**
+     * Post HTML work after converting things
+     *
+     * @param  string $html
+     * @return string
+     */
+    private function cleanup(string $html): string
+    {
+        // Typically this is used for conditionals and shouldn't be encoded
+        $html = str_replace('&amp;&amp;', '&&', $html);
+
+        return $html;
     }
 
     /**
