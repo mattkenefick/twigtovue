@@ -1,0 +1,48 @@
+
+<footer class="view-core-footer">
+    <div class="container">
+        {{ svg("branding/logo-square-laurels.svg") }}
+
+        <div class="slogan">
+            <p>
+                {{ trans('content.like_nothing_youve_seen') }}
+            </p>
+        </div>
+
+        <ul class="menu menu-00">
+            <li>
+                <a href="{{ url('/news') }}" title="{{ twigNavigateCaption('news') }}">{{ trans('content.news') }}</a>
+            </li>
+            <li>
+                <a href="{{ url('/explore') }}" title="{{ twigNavigateCaption('content.explore') }}">{{ trans('content.explore') }}</a>
+            </li>
+            <li>
+                <a href="{{ url('/connect') }}" title="{{ twigNavigateCaption('content.connect') }}">{{ trans('content.connect') }}</a>
+            </li>
+        </ul>
+
+        <ul class="menu menu-01">
+            <li>
+                <a href="{{ url('/submit') }}" title="{{ twigNavigateCaption('content.submit_a_film') }}">{{ trans('content.submit_a_film') }}</a>
+            </li>
+            <li>
+                <a href="{{ url('/subscribe') }}" title="{{ twigNavigateCaption('content.subscribe') }}">{{ trans('content.subscribe') }}</a>
+            </li>
+            <li>
+                <a href="{{ url('/shop') }}" title="{{ twigNavigateCaption('content.shop') }}">{{ trans('content.shop') }}</a>
+            </li>
+            <li>
+                <a href="{{ url('/register') }}" title="{{ twigNavigateCaption('content.sign_up') }}">{{ trans('content.sign_up') }}</a>
+            </li>
+            <li>
+                <a href="{{ url('/search') }}" title="{{ twigNavigateCaption('content.search') }}">{{ trans('content.search') }}</a>
+            </li>
+        </ul>
+
+        <div class="copyright">
+            <p>
+                {{ trans('content.copyright') }} &copy; {{ "now"|date("Y") }} Short of the Week, LLC
+            </p>
+        </div>
+    </div>
+</footer>

@@ -154,8 +154,12 @@ class Converter
     public function htmlToXml(string $html)
     {
         // @todo, This order was reversed before. Do we need to flip it back?
-        $html = self::xmlEscape($html);
         $html = html_entity_decode($html, ENT_QUOTES, 'utf-8');
+        $html = self::xmlEscape($html);
+
+        // Replace tag openings inside quotes
+        $html = preg_replace('#(?<=")([^"]+)( < )([^"]+)(?=")#is', '$1 &lt; $3', $html);
+        $html = preg_replace('#(?<=")([^"]+)( > )([^"]+)(?=")#is', '$1 &gt; $3', $html);
 
         return $this->xml = @simplexml_load_string($html, 'SimpleXMLElement', LIBXML_NOENT);
     }

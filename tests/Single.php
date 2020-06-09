@@ -41,6 +41,7 @@ class Single extends \PHPUnit\Framework\TestCase
         // $vueHtml = Converter::convert('data/basic-if-else.twig');
         // $vueHtml = Converter::convert('data/real-if-else.twig');
         // $vueHtml = Converter::convert('data/kitchen-sink-2.twig');
+        // $vueHtml = Converter::convert('data/footer.twig');
 
         $a = '<!-- Test Comment -->';
         $b = $vueHtml;
