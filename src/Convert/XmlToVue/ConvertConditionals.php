@@ -61,6 +61,7 @@ class ConvertConditionals
             // Apply
             $attributeValue = $condition;
             $attributeValue = str_replace([' and ', ' or '], [' && ', ' || '], $attributeValue);
+            $attributeValue = str_replace(['&gt;', '&lt;'], ['>', '<'], $attributeValue);
 
             $child->attr('v-' . $attributeType, $attributeValue);
 

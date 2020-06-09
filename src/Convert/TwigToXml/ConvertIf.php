@@ -175,12 +175,17 @@ class ConvertIf
     /**
      * Clean attribute values
      *
+     * XML validation specifically has an issue with "<" even when
+     * wrapped within quotes. Safer here to just convert both.
+     *
      * @return string
      */
     private static function cleanAttributes(string $attributeValue): string
     {
         $attributeValue = str_replace("'", "\'", $attributeValue);
         $attributeValue = str_replace('"', '\'', $attributeValue);
+        $attributeValue = str_replace('<', '&lt;', $attributeValue);
+        $attributeValue = str_replace('>', '&gt;', $attributeValue);
 
         return $attributeValue;
     }

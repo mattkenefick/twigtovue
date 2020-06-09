@@ -1,43 +1,67 @@
+{#
+    View/Component/Pagination
 
+    Options:
+        `currentPage` <number>
+        A page to highlight, if we want to highlight a page
+
+        `pages` <number>
+        Array of pages in basic form, [1, 2, 3, 4] so it can be used with
+        VueJS. Calculations are more complex; this simplifies it.
+
+        `totalPages` <number>
+        Amount of pages total which helps us know which arrows to show
+
+#}
 <div class="view-component-pagination">
     <!-- First, Double Arrows -->
-    {% if startPage > 2 %}
-        <a class="nav-item" href="#">
-            {{ icon("icon-arrow-left-double") }}
+    {% if pages[0] > 2 %}
+        <a class="nav-item" href="{{ currentUrlWith('page', 0) }}">
+            <span>
+                {{ icon("icon-arrow-left-double") }}
+            </span>
         </a>
     {% endif %}
 
     <!-- Back, Single Arrow -->
-    {% if startPage > 1 %}
-        <a class="nav-item" href="#">
-            {{ icon("icon-arrow-left-single") }}
+    {% if pages[0] > 1 %}
+        <a class="nav-item" href="{{ currentUrlWith('page', pages[0] - 1) }}">
+            <span>
+                {{ icon("icon-arrow-left-single") }}
+            </span>
         </a>
     {% endif %}
 
     <!-- Pagination -->
-    {% for i in startPage..(startPage + pageCount - 1) %}
-        {% if i == currentPage %}
-            <span class="nav-item state-active">
-                {{ i }}
-            </span>
-        {% else %}
-            <a class="nav-item" href="#">
-                {{ i }}
-            </a>
-        {% endif %}
+    {% for i in pages %}
+        <a class="nav-item" href="{{ currentUrlWith('page', i) }}">
+            {% if i == currentPage %}
+                <span class="state-active">
+                    {{ i }}
+                </span>
+            {% else %}
+                <span>
+                    {{ i }}
+                </span>
+            {% endif %}
+        </a>
     {% endfor %}
 
     <!-- Next, Single Arrow -->
-    {% if startPage < totalPages - 1 %}
-        <a class="nav-item" href="#">
-            {{ icon("icon-arrow-right-single") }}
+    {% if pages[0] < totalPages - 1 %}
+        <a class="nav-item" href="{{ currentUrlWith('page', currentPage + 1) }}">
+            <span>
+                {{ icon("icon-arrow-right-single") }}
+            </span>
         </a>
     {% endif %}
 
     <!-- Last, Double Arrows -->
-    {% if startPage < totalPages - 2 %}
-        <a class="nav-item" href="#">
-            {{ icon("icon-arrow-right-double") }}
+    {% if pages[0] < totalPages - 2 %}
+        <a class="nav-item" href="{{ currentUrlWith('page', totalPages - 1) }}">
+            <span>
+                {{ icon("icon-arrow-right-double") }}
+            </span>
         </a>
     {% endif %}
 </div>

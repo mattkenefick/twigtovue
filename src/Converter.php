@@ -85,13 +85,16 @@ class Converter
         // Convert
         // @todo, do we need to pass in everything from parser?
         $html = $instance->twigToHtml($parser, $parser->template);
+// echo $html;exit;
 
         // Convert our HTML tags into generic XML which helps
         // us find closing tags
         $xml = $instance->htmlToXml($html);
+// print_r($xml);exit;
 
         // Use QueryPath to traverse through XML easier
         $qp = $instance->xmlToQueryPath($xml);
+// echo $qp->html();exit;
 
         // Convert our new XML into a Vue template
         $vueHtml = $instance->queryPathToVue($qp);
@@ -150,8 +153,9 @@ class Converter
      */
     public function htmlToXml(string $html)
     {
-        $html = html_entity_decode($html, ENT_QUOTES, 'utf-8');
+        // @todo, This order was reversed before. Do we need to flip it back?
         $html = self::xmlEscape($html);
+        $html = html_entity_decode($html, ENT_QUOTES, 'utf-8');
 
         return $this->xml = @simplexml_load_string($html, 'SimpleXMLElement', LIBXML_NOENT);
     }
@@ -200,6 +204,12 @@ class Converter
     {
         // Typically this is used for conditionals and shouldn't be encoded
         $html = str_replace('&amp;&amp;', '&&', $html);
+
+        // We want "&gt;" as literal within conditional attributes. It's not
+        // standard XML, but it's used for templates.
+        // @todo, we should regex here to check for quote wrappers
+        $html = str_replace(' &gt; ', ' > ', $html);
+        $html = str_replace(' &lt; ', ' < ', $html);
 
         return $html;
     }
