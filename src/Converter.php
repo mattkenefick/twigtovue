@@ -27,7 +27,6 @@ use PolymerMallard\TwigToVue\Convert\XmlToVue;
  */
 class Converter
 {
-
     /**
      * HTML
      *
@@ -235,5 +234,4 @@ class Converter
             $string
         );
     }
-
 }

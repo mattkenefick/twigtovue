@@ -1,0 +1,27 @@
+
+<div class="view-film-thumbnailLink">
+    <figure>
+        <img src="{{ imageUrl('/fpo/feature-square-00.jpg') }}" />
+    </figure>
+
+{% if film %}
+    <div class="content">
+        <h3 class="title">
+            {{ film.content.title }}
+        </h3>
+        <p class="description">
+            {{ film.content.description }}
+        </p>
+
+        <div class="meta">
+            <span class="director">Matthias Hoegg</span>
+            <span class="duration">12 min</span>
+            <time class="published-at">Apr 23, 2020</time>
+        </div>
+    </div>
+{% else %}
+    <div>
+        <p>NO CONTENT AVAILABLE</p>
+    </div>
+{% endif %}
+</div>

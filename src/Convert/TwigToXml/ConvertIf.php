@@ -21,11 +21,18 @@ class ConvertIf
 {
 
     /**
-     * Tag to close
+     * Depth
      *
-     * @var null
+     * @var int
      */
-    private static $previousTag = null;
+    private static $depth = 0;
+
+    /**
+     * Previous tags
+     *
+     * @var array
+     */
+    private static $tagHistory = [];
 
     /**
      * Convert
@@ -66,9 +73,16 @@ class ConvertIf
      */
     private static function convertIf(string $str, string $outerValue, string $attributeValue) : string
     {
+        // $previousTag = self::getPreviousTag();
+        $previousTag = end(self::$tagHistory) != 'if' ? self::getPreviousTag() : '';
         $attributeValue = self::cleanAttributes($attributeValue);
-        $value = str_replace($outerValue, self::getPreviousTag() . '<if condition="' . $attributeValue . '">', $str);
-        self::$previousTag = 'if';
+        $value = self::str_replace_first($outerValue, $previousTag . '<if condition="' . $attributeValue . '">', $str);
+
+        // increase depth
+        self::$depth++;
+
+        // add conditional to history
+        self::addPreviousTag('if');
 
         return $value;
     }
@@ -85,9 +99,12 @@ class ConvertIf
      */
     private static function convertElseIf(string $str, string $outerValue, string $attributeValue) : string
     {
+        $previousTag = self::getPreviousTag();
         $attributeValue = self::cleanAttributes($attributeValue);
-        $value = str_replace($outerValue, self::getPreviousTag() . '<elseif condition="' . $attributeValue . '">', $str);
-        self::$previousTag = 'elseif';
+        $value = self::str_replace_first($outerValue, $previousTag . '<elseif condition="' . $attributeValue . '">', $str);
+
+        // add conditional to history
+        self::addPreviousTag('elseif');
 
         return $value;
     }
@@ -104,9 +121,12 @@ class ConvertIf
      */
     private static function convertElse(string $str, string $outerValue, string $attributeValue) : string
     {
+        $previousTag = self::getPreviousTag();
         $attributeValue = self::cleanAttributes($attributeValue);
-        $value = str_replace($outerValue, self::getPreviousTag() . '<else condition="' . $attributeValue . '">', $str);
-        self::$previousTag = 'else';
+        $value = self::str_replace_first($outerValue, $previousTag . '<else condition="' . $attributeValue . '">', $str);
+
+        // add conditional to history
+        self::addPreviousTag('else');
 
         return $value;
     }
@@ -123,23 +143,31 @@ class ConvertIf
      */
     private static function convertEndIf(string $str, string $outerValue, string $attributeValue) : string
     {
-        switch (self::$previousTag) {
-            case 'else':
-                $value = str_replace($outerValue, '</else>', $str);
-                break;
+        $previousTag = self::getPreviousTag();
 
-            case 'elseif':
-                $value = str_replace($outerValue, '</elseif>', $str);
-                break;
+        $value = self::str_replace_first($outerValue, $previousTag, $str);
 
-            default:
-            case 'if':
-                $value = str_replace($outerValue, '</if>', $str);
-                break;
-        }
+        // $value = str_replace($outerValue, $previousTag . "\n", $str);
+        // switch ($previousTag) {
+        //     case '</else>':
+        //         $value = str_replace($outerValue, '</else>', $str);
+        //         break;
+
+        //     case '</elseif>':
+        //         $value = str_replace($outerValue, '</elseif>', $str);
+        //         break;
+
+        //     default:
+        //     case '</if>':
+        //         $value = str_replace($outerValue, '</if>', $str);
+        //         break;
+        // }
+
+        // decrease depth
+        self::$depth--;
 
         // Unset previous tag because block is closed
-        self::$previousTag = null;
+        // self::$previousTag = null;
 
         return $value;
     }
@@ -162,15 +190,42 @@ class ConvertIf
      *
      * @return string
      */
+    private static function addPreviousTag(string $tag): void
+    {
+        // echo ' o tag = ' . $tag . "   (" . implode(', ', self::$tagHistory) . ") \n";
+
+        self::$tagHistory[] = $tag;
+    }
+    /**
+     * Return closing tag if necessary
+     *
+     * @return string
+     */
     private static function getPreviousTag(): string
     {
-        if (self::$previousTag) {
-            $tag = self::$previousTag;
-            self::$previousTag = null;
+        if (count(self::$tagHistory)) {
+            // echo ' x ' . (end(self::$tagHistory)) . "   {" . implode(', ', self::$tagHistory) . "} \n";
+
+            $tag = array_pop(self::$tagHistory);
             return '</' . $tag . '>';
         }
 
         return '';
+    }
+
+    /**
+     * Replace only first instance
+     *
+     * @param  string $from
+     * @param  string $to
+     * @param  string $content
+     * @return string
+     */
+    private static function str_replace_first(string $from, string $to, string $content): string
+    {
+        $from = '#' . preg_quote($from, '#') . '#';
+
+        return preg_replace($from, $to, $content, 1);
     }
 
 }

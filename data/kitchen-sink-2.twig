@@ -1,0 +1,71 @@
+<div class="view-component-thumbnailLink {{ class }}">
+    {% if image %}
+        <figure>
+            {% if link %}
+                <a href="{{ link.href }}" title="{{ link.title }}">
+                    <img
+                        alt="{{ image.alt }}"
+                        src="{{ image.src }}"
+                        title="{{ image.title }}" />
+                </a>
+            {% else %}
+                <img
+                    alt="{{ image.alt }}"
+                    src="{{ image.src }}"
+                    title="{{ image.title }}" />
+            {% endif %}
+        </figure>
+    {% endif %}
+
+    <div class="content">
+        {% if title %}
+            {% if link %}
+                <a href="{{ link.href }}" title="{{ link.title }}">
+                    <h3 class="title">
+                        {{ title }}
+                    </h3>
+                </a>
+            {% else %}
+                <h3 class="title">
+                    {{ title }}
+                </h3>
+            {% endif %}
+        {% endif %}
+
+        {% if userProfile %}
+            <div class="user">
+                {% include "Web/" ~ "View/User/ProfileMicro/ProfileMicro.twig" with {
+                    image: userProfile.image,
+                    name: userProfile.name,
+                    badges: userProfile.badges,
+                } %}
+            </div>
+        {% endif %}
+
+        {% if description %}
+            <p class="description">
+                {{ description }}
+            </p>
+        {% endif %}
+
+        {% if meta %}
+            <div class="meta">
+                {% for item in meta %}
+                    {% if item.href %}
+                        <a href="{{ item.href }}" class="{{ item.class }}">
+                            {{ item.value }}
+                        </a>
+                    {% elseif item.class == "date" %}
+                        <time class="{{ item.class }}">
+                            {{ item.value }}
+                        </time>
+                    {% else %}
+                        <span class="{{ item.class }}">
+                            {{ item.value }}
+                        </span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
