@@ -27,9 +27,12 @@ class ConvertInclude
      * and only allows literal values, like :property="'String'"
      * as opposed to :foo="bar"
      *
+     * @todo  Why did we want this?
+     * @todo  How can we toggle this from an app?
+     *
      * @var boolean
      */
-    public static $onlyLiteralAttributes = true;
+    public static $onlyLiteralAttributes = false;
 
     /**
      * Convert
@@ -103,7 +106,10 @@ class ConvertInclude
                 $isLiteral = strpos($value, "'") === 0;
 
                 // If we have a key, value, and it's a literal
-                if ($key && $value && ($isLiteral && self::$onlyLiteralAttributes)) {
+                if (
+                    $key && $value &&
+                    (($isLiteral && self::$onlyLiteralAttributes) || !self::$onlyLiteralAttributes)
+                ) {
                     $attributes .= ':' . $key . '="' . $value . '" ';
                 }
             }

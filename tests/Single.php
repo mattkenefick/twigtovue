@@ -35,9 +35,9 @@ class Single extends \PHPUnit\Framework\TestCase
     {
         // $vueHtml = Converter::convert('<div>{% include "namespace" ~ "ok.twig" %}</div>');
         // $vueHtml = Converter::convert('<div>{# Sup Homie #}</div>');
-        $vueHtml = Converter::convert('data/pagination.twig');
+        // $vueHtml = Converter::convert('data/pagination.twig');
         // $vueHtml = Converter::convert('data/basic-loop.twig');
-        // $vueHtml = Converter::convert('data/include-objects.twig');
+        $vueHtml = Converter::convert('data/include-objects.twig');
         // $vueHtml = Converter::convert('data/basic-if-else.twig');
         // $vueHtml = Converter::convert('data/real-if-else.twig');
         // $vueHtml = Converter::convert('data/kitchen-sink-2.twig');
