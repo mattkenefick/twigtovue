@@ -161,6 +161,11 @@ class Converter
         $html = preg_replace('#(?<=")([^"]+)( < )([^"]+)(?=")#is', '$1 &lt; $3', $html);
         $html = preg_replace('#(?<=")([^"]+)( > )([^"]+)(?=")#is', '$1 &gt; $3', $html);
 
+        // Remove XMLNS attributes from SVG elements. This is a strange bug that will
+        // unwrap the <svg> element and move is attributes to parent elements. The
+        // best solution is to remove the xmlns="..." part
+        $html = preg_replace('#(xmlns=\"[^"]+\")#is', '', $html);
+
         return $this->xml = @simplexml_load_string($html, 'SimpleXMLElement', LIBXML_NOENT);
     }
 
