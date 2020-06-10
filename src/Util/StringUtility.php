@@ -27,7 +27,7 @@ class StringUtility
      * @param  string $end   Ending string
      * @return string
      */
-    public static function between(string $str, string $start, string $end): string
+    public static function between(string $str, string $start, string $end, bool $fromEnd = false): string
     {
         $str = ' ' . $str;
         $ini = strpos($str, $start);
@@ -37,7 +37,9 @@ class StringUtility
         }
 
         $ini += strlen($start);
-        $len = strpos($str, $end, $ini) - $ini;
+        $len = $fromEnd
+            ? strrpos($str, $end, $ini) - $ini
+            : strpos($str, $end, $ini) - $ini;
 
         return substr($str, $ini, $len);
     }

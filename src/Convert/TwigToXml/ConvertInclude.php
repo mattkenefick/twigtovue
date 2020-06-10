@@ -95,14 +95,21 @@ class ConvertInclude
 
         // Attributes between with { } brackets
         $attributes = '';
-        $with = Util\StringUtility::between($attributeValue, '{', '}');
-        preg_match_all('#[ \n](.*)\:(.*)[,\n]#Us', $with, $matches);
+        $with = Util\StringUtility::between($attributeValue, '{', '}', true);
+
+        // The [,] had \n before but that eliminates ability to do multi-line
+        // JSON objects, but we could rewrite it with lookaheads to make it work
+        // better.. but we can switch to this for now if we ensure we use
+        // trailing commas.
+        preg_match_all('#[ \n](.*)\:(.*)[,]#Us', $with, $matches);
 
         // Iterate through matches
         if (count($matches[0])) {
             for ($i = 0; $i < count($matches[0]); $i++) {
                 $key = trim($matches[1][$i]);
                 $value = str_replace('"', '\'', trim($matches[2][$i]));
+                $value = str_replace("\n", ' ', $value);
+
                 $isLiteral = strpos($value, "'") === 0;
 
                 // If we have a key, value, and it's a literal
