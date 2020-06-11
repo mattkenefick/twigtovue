@@ -1,0 +1,9 @@
+
+<div>
+    {% include "Web/" ~ "View/Form/Dropdown/Dropdown" with {
+        foo: bar,
+        name: "sortBy",
+        disabledCaption: "Sort By",
+        options: { 'foo': 'Bar' },
+    } %}
+</div>
