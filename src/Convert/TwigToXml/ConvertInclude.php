@@ -97,11 +97,44 @@ class ConvertInclude
         $attributes = '';
         $with = Util\StringUtility::between($attributeValue, '{', '}', true);
 
+        $jsonStr = $with;
+
+        // Modify JSON string
+        // $jsonStr = str_replace("\n", '', '{ ' . $jsonStr . ' }');
+        $jsonStr = str_replace("\n", '', '{ ' . $jsonStr . ' }');
+
+        // Remove double spaces
+        $jsonStr = preg_replace("#\s+#im", " ", $jsonStr);
+
+        // Fix space between keys
+        $jsonStr = preg_replace("#([a-zA-Z]) :#im", "$1:", $jsonStr);
+
+        // Remove trailing commas for last lines
+        $jsonStr = preg_replace("#,?\s?}#im", " }", $jsonStr);
+
+        // Fix keys without quotes
+        $jsonStr = preg_replace("# ([a-zA-Z\_]+):#im", ' "$1":', $jsonStr);
+
+        // Fix apostrophes
+        $jsonStr = str_replace("'", "\'", $jsonStr);
+
+        // Convert Quotes
+        $jsonStr = str_replace('"', "'", $jsonStr);
+
+        // New with string
+        // $withStr = preg_replace('#[,]+(?![^{]*\}) ?#im', "\n", $jsonStr);
+        $jsonStr = preg_replace('#{ (.*) }#im', "$1", $jsonStr);
+        $jsonStr = preg_replace('#[,]+(?![^{]*\}) ?#im', "\n", $jsonStr);
+
         // The [,] had \n before but that eliminates ability to do multi-line
         // JSON objects, but we could rewrite it with lookaheads to make it work
         // better.. but we can switch to this for now if we ensure we use
         // trailing commas.
-        preg_match_all('#[ \n](.*)\:(.*)[,]#Us', $with, $matches);
+        // preg_match_all('#[ \n](.*)\:(.*)[,\n]#Us', $jsonStr, $matches);
+        preg_match_all("#^\'([^\']+)\'\: (.*)$#im", $jsonStr, $matches);
+
+        // Save for template
+        // $attributes = $jsonStr;
 
         // Iterate through matches
         if (count($matches[0])) {
