@@ -119,7 +119,7 @@ class ConvertInclude
         $jsonStr = preg_replace("# ([a-zA-Z\_]+):#im", ' "$1":', $jsonStr);
 
         // Fix apostrophes
-        $jsonStr = str_replace("'", "\'", $jsonStr);
+        // $jsonStr = str_replace("'", "\'", $jsonStr);
 
         // Convert Quotes
         $jsonStr = str_replace('"', "'", $jsonStr);
