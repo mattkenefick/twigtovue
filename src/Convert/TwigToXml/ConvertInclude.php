@@ -106,6 +106,9 @@ class ConvertInclude
         // Remove double spaces
         $jsonStr = preg_replace("#\s+#im", " ", $jsonStr);
 
+        // Convert single quote wrappers to doubles
+        $jsonStr = preg_replace("#: '(.*)',#im", ": \"$1\",", $jsonStr);;
+
         // Fix space between keys
         $jsonStr = preg_replace("#([a-zA-Z]) :#im", "$1:", $jsonStr);
 
