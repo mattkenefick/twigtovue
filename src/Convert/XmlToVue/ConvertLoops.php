@@ -37,7 +37,7 @@ class ConvertLoops
         // Apply for loops
         foreach ($queryPath->find('for') as $item) {
             $iterator = $item->attr('iterator');
-            preg_match('#([^ ]+) of (.*)$#U', $iterator, $matches);
+            preg_match('#([^ ]+) (?:of|in) (.*)$#U', $iterator, $matches);
             list($original, $model, $collection) = $matches;
 
             // Get child

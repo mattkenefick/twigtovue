@@ -97,66 +97,123 @@ class ConvertInclude
         $attributes = '';
         $with = Util\StringUtility::between($attributeValue, '{', '}', true);
 
-        $jsonStr = $with;
+        $jsonStr = '{ ' . $with . ' }';
+
+        // @todo, We were removing lines and spaces to simplify the strings
+        // so we could create a proper Lexer that would allow single line,
+        // double line, minified, etc code. But this is a pain at the moment
+        // so we're temporarily disabling that feature and making it an
+        // effort on the developer's part to properly break lines on with: {}
+        // statements.
 
         // Modify JSON string
         // $jsonStr = str_replace("\n", '', '{ ' . $jsonStr . ' }');
-        $jsonStr = str_replace("\n", '', '{ ' . $jsonStr . ' }');
 
-        // Remove double spaces
-        $jsonStr = preg_replace("#\s+#im", " ", $jsonStr);
+        // Flatten internal objects
+        // $jsonStr = preg_replace_callback(
+        //     '#(?<=: \{)([^\}]+)},$#im',
+        //     function($matches) {
+        //         $str = str_replace("\n", '', $matches[0]);
+        //         $str = preg_replace('/\s+/', ' ', $str);
+        //         return $str;
+        //     }, $jsonStr
+        // );
+        //
+        // // Remove double spaces, starting spaces, and trailing cmomas
+        // $jsonStr = preg_replace('# +#im', ' ', $jsonStr);
+        // $jsonStr = preg_replace('#^ #im', '', $jsonStr);
+        // $jsonStr = preg_replace('#,$#im', '', $jsonStr);
 
-        // Convert single quote wrappers to doubles
-        $jsonStr = preg_replace("#: '(.*)',#im", ": \"$1\",", $jsonStr);;
+        // // Convert single quote wrappers to doubles, for values
+        // $jsonStr = preg_replace("#: '(.*)',#im", ": \"$1\",", $jsonStr);;
 
-        // Fix space between keys
-        $jsonStr = preg_replace("#([a-zA-Z]) :#im", "$1:", $jsonStr);
+        // // Fix space between keys
+        // $jsonStr = preg_replace("#([a-zA-Z]) :#im", "$1:", $jsonStr);
 
-        // Remove trailing commas for last lines
-        $jsonStr = preg_replace("#,?\s?}#im", " }", $jsonStr);
+        // // Remove trailing commas for last lines of objects
+        // $jsonStr = preg_replace("#,?\s?}#im", " }", $jsonStr);
 
-        // Fix keys without quotes
-        $jsonStr = preg_replace("# ([a-zA-Z\_]+):#im", ' "$1":', $jsonStr);
+        // // Fix keys without quotes
+        // $jsonStr = preg_replace("#^([a-zA-Z\_]+):#im", '"$1":', $jsonStr);
 
-        // Fix apostrophes
-        // $jsonStr = str_replace("'", "\'", $jsonStr);
-
-        // Convert Quotes
-        $jsonStr = str_replace('"', "'", $jsonStr);
+        // // Convert Quotes
+        // $jsonStr = str_replace('"', "'", $jsonStr);
 
         // New with string
-        // $withStr = preg_replace('#[,]+(?![^{]*\}) ?#im', "\n", $jsonStr);
-        $jsonStr = preg_replace('#{ (.*) }#im', "$1", $jsonStr);
-        $jsonStr = preg_replace('#[,]+(?![^{]*\}) ?#im', "\n", $jsonStr);
+        // $jsonStr = preg_replace('#{ (.*) }#im', "$1", $jsonStr);
+
+        // @note, This was part of above, but we simplified it to make it more
+        // on the user to format the code correctly
+        //
+        // $jsonStr = preg_replace('#[,]+(?![^{]*\ }) ?#im', "\n", $jsonStr);
+        // $jsonStr = preg_replace('#[,]+(?![^{]*\ }) ?#im', "\n", $jsonStr);
+
+        // // Trim edge space
+        // $jsonStr = trim($jsonStr);
 
         // The [,] had \n before but that eliminates ability to do multi-line
         // JSON objects, but we could rewrite it with lookaheads to make it work
         // better.. but we can switch to this for now if we ensure we use
         // trailing commas.
         // preg_match_all('#[ \n](.*)\:(.*)[,\n]#Us', $jsonStr, $matches);
-        preg_match_all("#^\'([^\']+)\'\: (.*)$#im", $jsonStr, $matches);
+        // preg_match_all("#^\'([^\']+)\'\: (.*)$#im", $jsonStr, $matches);
 
-        // Save for template
-        // $attributes = $jsonStr;
+        // // Save for template
+        // // $attributes = $jsonStr;
 
-        // Iterate through matches
-        if (count($matches[0])) {
-            for ($i = 0; $i < count($matches[0]); $i++) {
-                $key = trim($matches[1][$i]);
-                $value = str_replace('"', '\'', trim($matches[2][$i]));
-                $value = str_replace("\n", ' ', $value);
+        // Convert functions and variables to literals for JSON conversion
+        $jsonStr = preg_replace_callback('#:\s?([a-zA-Z][^,]+),#im', function($matches) {
+            $value = $matches[1];
+            $value = str_replace('"', '\'', $value);
+            return ': "@@' . $value . '",';
+        }, $jsonStr);
 
-                $isLiteral = strpos($value, "'") === 0;
+        // Convert to JSON
+        $json = new Util\Services_JSON();
+        $bob = $json->decode($jsonStr);
 
-                // If we have a key, value, and it's a literal
-                if (
-                    $key && $value &&
-                    (($isLiteral && self::$onlyLiteralAttributes) || !self::$onlyLiteralAttributes)
-                ) {
-                    $attributes .= ':' . $key . '="' . $value . '" ';
-                }
-            }
+        // Iterate through
+        foreach ($bob as $key => $value) {
+            $x = json_encode($value);
+
+            // Revert functions and variables
+            $x = preg_replace('#["]?@@([^"]+)"?#im', '$1', $x);
+            $x = str_replace('\/', '/', $x);
+
+            // Escape existing singles
+            $x = str_replace('\'', '\\\'', $x);
+
+            // Convert doubles to singles
+            $x = str_replace('"', '\'', $x);
+
+            // Wrap in quotes
+            $x = "\"$x\"";
+
+            // Fix literal strings
+            $x = preg_replace('#""(.*)""#im', "\"'$1'\"", $x);
+
+            $attributes .= ":$key=" . $x . "\n\n\n";
         }
+
+        // // Iterate through matches
+        // if (count($matches[0])) {
+        //     for ($i = 0; $i < count($matches[0]); $i++) {
+        //         $key = trim($matches[1][$i]);
+        //         $value = str_replace('"', '\'', trim($matches[2][$i]));
+        //         $value = str_replace("\n", ' ', $value);
+
+        //         $isLiteral = strpos($value, "'") === 0;
+
+        //         // If we have a key, value, and it's a literal
+        //         if (
+        //             $key && $value &&
+        //             (($isLiteral && self::$onlyLiteralAttributes) || !self::$onlyLiteralAttributes)
+        //         ) {
+        //             $attributes .= ':' . $key . '="' . $value . '" ';
+        //         }
+        //     }
+        // }
+
 
         $value = str_replace($outerValue, '<include component="' . $component . '" ' . $attributes . ' />', $str);
 

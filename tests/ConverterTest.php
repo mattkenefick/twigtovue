@@ -117,10 +117,8 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     {
         $vueHtml = Converter::convert('data/include-objects.twig');
 
-        $a = '<ViewComponentPillGroup :header="\'Literal String\'"></ViewComponentPillGroup>';
-        $b = $vueHtml;
-
-        $this->assertStringContainsString($a, $b);
+        $this->assertStringContainsString(' :header="\'Literal String\'', $vueHtml);
+        $this->assertStringContainsString(' :integer="5"', $vueHtml);
     }
 
     /**
@@ -168,7 +166,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     {
         $vueHtml = Converter::convert('data/kitchen-sink.twig');
 
-        $a = '<ViewFilmIndex>';
+        $a = '<ViewFilmIndex :films="[]"></ViewFilmIndex>';
         $b = $vueHtml;
 
         $this->assertStringContainsString($a, $b);

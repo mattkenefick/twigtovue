@@ -85,7 +85,6 @@ class Converter
         // Convert
         // @todo, do we need to pass in everything from parser?
         $html = $instance->twigToHtml($parser, $parser->template);
-// echo $html;exit;
 
         // Convert our HTML tags into generic XML which helps
         // us find closing tags
