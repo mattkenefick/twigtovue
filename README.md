@@ -24,6 +24,8 @@
 
     $ composer test
 
+    $ composer test-one
+
 
 ## Configure
 

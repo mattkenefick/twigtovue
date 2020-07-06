@@ -78,7 +78,7 @@ class ConvertAttributes
     private static function getAttributesFromHtml(string $html): array
     {
         // $regex = '#\s([a-zA-Z\_]+)=["\'](?={{)["\']#im';
-        $regex = '#\s([a-zA-Z\_]+)=["\'](?={{)[^"\']+["\']#im';
+        $regex = '#\s([a-zA-Z\_\-]+)=["\'](?={{)[^"\']+["\']#im';
         // $html = '<a href="{{ header.href }}" title="{{ header.text">{{ header.title }}</a>';
 
         // Run matching
