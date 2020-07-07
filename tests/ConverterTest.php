@@ -82,7 +82,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
 
         $this->assertStringContainsString($a, $b);
 
-        $a = '<p v-else="">';
+        $a = '<p v-else="else">';
         $b = $vueHtml;
 
         $this->assertStringContainsString($a, $b);

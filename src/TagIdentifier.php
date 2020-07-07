@@ -77,7 +77,7 @@ class TagIdentifier
     public static function replace(string $value) : string
     {
         $identifiedTag = self::identify($value);
-        $value = str_replace($identifiedTag, '', $value);
+        $value = preg_replace('#' . $identifiedTag . '[^a-zA-Z]#is', '', $value);
 
         return self::fixString($value);
     }
