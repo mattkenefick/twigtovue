@@ -137,6 +137,9 @@ class Converter
                 : $html;
         }
 
+        // Convert appends
+        $html = $this->fixAppends($html);
+
         // Convert comments
         $html = $this->fixComments($html);
 
@@ -220,6 +223,19 @@ class Converter
         $html = str_replace(' &lt; ', ' < ', $html);
 
         return $html;
+    }
+
+    /**
+     * Replace appends
+     *
+     * @param  string $value
+     *
+     * @return string
+     */
+    private static function fixAppends(string $value) : string
+    {
+        $value = str_replace(' ~ ', ' + ', $value);
+        return $value;
     }
 
     /**
