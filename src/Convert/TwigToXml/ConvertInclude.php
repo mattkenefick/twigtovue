@@ -197,6 +197,10 @@ class ConvertInclude
             $attributes .= ":$key=" . $x . "\n\n\n";
         }
 
+        // Convert concatenated variables
+        $attributes = str_replace("\' ~", "' ~", $attributes);
+        $attributes = str_replace("~ \'", "~ '", $attributes);
+
         // // Iterate through matches
         // if (count($matches[0])) {
         //     for ($i = 0; $i < count($matches[0]); $i++) {
