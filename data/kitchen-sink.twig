@@ -50,7 +50,8 @@
 
     <footer>
         {% include 'view/footer/main.twig' with {
-            title: "My Header Title"
+            title: "My Header Title",
+            foo: model.getTitle(),
         } %}
     </footer>
 </main>

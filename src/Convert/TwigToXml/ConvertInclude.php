@@ -163,7 +163,8 @@ class ConvertInclude
 
         // Convert functions and variables to literals for JSON conversion
         // $jsonStr = preg_replace_callback('#:\s?([a-zA-Z][^,]+),#im', function($matches) {
-        $jsonStr = preg_replace_callback('#:\s?([a-zA-Z0-9\_]+),?$#im', function($matches) {
+        // $jsonStr = preg_replace_callback('#:\s?([a-zA-Z0-9\_]+),?$#im', function($matches) {
+        $jsonStr = preg_replace_callback('#:\s?([a-zA-Z][^,]+),?$#im', function($matches) {
             $value = $matches[1];
             $value = str_replace('"', '\'', $value);
             return ': "@@' . $value . '",';
