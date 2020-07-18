@@ -176,6 +176,12 @@ class ConvertInclude
 
         // Iterate through
         foreach ($bob as $key => $value) {
+            // Remove null array data
+            if (is_array($value)) {
+                $value = array_filter($value);
+            }
+
+            // Encode
             $x = json_encode($value);
 
             // Revert functions and variables

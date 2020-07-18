@@ -53,4 +53,26 @@
             foo: model.getTitle(),
         } %}
     </footer>
+
+
+    {% include "Web/" ~ "View/Component/ThumbnailLink/ThumbnailLink.twig" with {
+        type: type,
+        image: {
+            src: model.media.getThumbnailUrl(),
+        },
+        defaultImage: {
+            src: imageUrl('/generic/content-thumbnail.svg'),
+        },
+        link: {
+            href: model.getUrl(),
+            title: model.getTitle(),
+        },
+        title: model.getTitle(),
+        meta: [
+            {
+                class: "date",
+                value: "Apr 23, 2020",
+            },
+        ],
+    } %}
 </main>

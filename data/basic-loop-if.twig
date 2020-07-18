@@ -7,6 +7,11 @@
         {% endif %}
     {% endfor %}
 
+
+    {% for model in foo.bar.xyz %}
+        <span>{{ model }}</span>
+    {% endfor %}
+
     <div>
     {% for model in collection %}
         <div class="second-loop">
