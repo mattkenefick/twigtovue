@@ -36,6 +36,7 @@ class Single extends \PHPUnit\Framework\TestCase
         // $vueHtml = Converter::convert('<div>{% include "namespace" ~ "ok.twig" %}</div>');
         // $vueHtml = Converter::convert('<div>{# Sup Homie #}</div>');
         // $vueHtml = Converter::convert('data/pagination.twig');
+        $vueHtml = Converter::convert('data/interpolated-attributes.twig');
         // $vueHtml = Converter::convert('data/basic-include.twig');
         // $vueHtml = Converter::convert('data/basic-loop-if.twig');
         // $vueHtml = Converter::convert('data/basic-loop.twig');
@@ -44,12 +45,12 @@ class Single extends \PHPUnit\Framework\TestCase
         // $vueHtml = Converter::convert('data/if-in-notification.twig');
         // $vueHtml = Converter::convert('data/basic-if-else.twig');
         // $vueHtml = Converter::convert('data/real-if-else.twig');
-        $vueHtml = Converter::convert('data/kitchen-sink.twig');
+        // $vueHtml = Converter::convert('data/kitchen-sink.twig');
         // $vueHtml = Converter::convert('data/kitchen-sink-2.twig');
         // $vueHtml = Converter::convert('data/footer.twig');
         // $vueHtml = Converter::convert('data/hyphen-attribute.twig');
         // $vueHtml = Converter::convert('data/combine-strings-and-objects.twig');
-
+return;
         $a = '<!-- Test Comment -->';
         $b = $vueHtml;
 

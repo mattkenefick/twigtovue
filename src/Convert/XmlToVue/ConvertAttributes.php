@@ -61,8 +61,28 @@ class ConvertAttributes
             foreach ($elements as $element) {
                 $attributeValue = $element->attr($attribute);
 
+                // Set values
+                $newAttribute = ':' . $attribute;
+                $newValue = $attributeValue;
+                // $newValue = Util\StringUtility::removeTags($attributeValue);
+
+                // Convert brackets to quotes
+                $newValue = str_replace(['{{', '}}'], ["' + ", " + '"], $newValue);
+                $newValue = "'$newValue'";
+
+                // Fix empty brackets
+                $newValue = str_replace([
+                    "'' + ",
+                    "' ' + ",
+                    " + ''",
+                    " + ' '",
+                ], '', $newValue);
+
+                // Trim
+                $newValue = trim($newValue);
+
                 // Set Vue style attribute
-                $element->attr(':' . $attribute, Util\StringUtility::removeTags($attributeValue));
+                $element->attr($newAttribute, $newValue);
 
                 // Remove old attribute
                 $element->removeAttr($attribute);
@@ -77,8 +97,13 @@ class ConvertAttributes
      */
     private static function getAttributesFromHtml(string $html): array
     {
+        // v2: Adding the brackets
+        $regex = '#\s([a-zA-Z\_\-]+)=["\'][^"\']+["\']#im';
+
+        // v1: Why did we ignore the {{ brackets?
+        // $regex = '#\s([a-zA-Z\_\-]+)=["\'](?={{)[^"\']+["\']#im';
+
         // $regex = '#\s([a-zA-Z\_]+)=["\'](?={{)["\']#im';
-        $regex = '#\s([a-zA-Z\_\-]+)=["\'](?={{)[^"\']+["\']#im';
         // $html = '<a href="{{ header.href }}" title="{{ header.text">{{ header.title }}</a>';
 
         // Run matching
