@@ -85,6 +85,7 @@ class Converter
         // Convert
         // @todo, do we need to pass in everything from parser?
         $html = $instance->twigToHtml($parser, $parser->template);
+// print_r($html);exit;
 
         // Convert our HTML tags into generic XML which helps
         // us find closing tags
@@ -163,6 +164,11 @@ class Converter
         $html = preg_replace('#(?<=")([^"]+)( < )([^"]+)(?=")#is', '$1 &lt; $3', $html);
         $html = preg_replace('#(?<=")([^"]+)( > )([^"]+)(?=")#is', '$1 &gt; $3', $html);
 
+        // Replace tag openings in quotes again? Not sure why. This one works
+        // for `test.twig`, but what's up with the above?
+        $html = preg_replace('#(?:=")([^"]+)(<)([^"]+)(?=")#is', '="$1Xlt;$3', $html);
+        $html = preg_replace('#(?:=")([^"]+)(>)([^"]+)(?=")#is', '="$1Xgt;$3', $html);
+
         // Remove XMLNS attributes from SVG elements. This is a strange bug that will
         // unwrap the <svg> element and move is attributes to parent elements. The
         // best solution is to remove the xmlns="..." part
@@ -221,6 +227,10 @@ class Converter
         // @todo, we should regex here to check for quote wrappers
         $html = str_replace(' &gt; ', ' > ', $html);
         $html = str_replace(' &lt; ', ' < ', $html);
+
+        // Replace arrows inside quotes
+        $html = str_replace('Xgt;', '>', $html);
+        $html = str_replace('Xlt;', '<', $html);
 
         return $html;
     }
