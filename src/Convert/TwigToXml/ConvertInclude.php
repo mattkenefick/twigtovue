@@ -49,7 +49,6 @@ class ConvertInclude
         switch ($tag) {
             case 'include':
                 return self::convertInclude($str, $outerValue, $attributeValue);
-
         }
     }
 
@@ -161,12 +160,18 @@ class ConvertInclude
         // // Save for template
         // // $attributes = $jsonStr;
 
+        // Convert inner commas otherwise we'd have to do some sort of lookahead
+        // expression that I'm unsure how to do
+        $jsonStr = preg_replace_callback('/\(([^)]+)\)/', function($matches) {
+            return str_replace(',', '^^^', $matches[0]);
+        }, $jsonStr);
+
         // Convert functions and variables to literals for JSON conversion
         // $jsonStr = preg_replace_callback('#:\s?([a-zA-Z][^,]+),#im', function($matches) {
         // $jsonStr = preg_replace_callback('#:\s?([a-zA-Z0-9\_]+),?$#im', function($matches) {
         $jsonStr = preg_replace_callback('#:\s?([a-zA-Z][^,]+),?$#im', function($matches) {
             $value = $matches[1];
-            $value = str_replace('"', '\'', $value);
+            $value = str_replace(['"', ','], ['\'', '^^^'], $value);
             return ': "@@' . $value . '",';
         }, $jsonStr);
 
@@ -184,9 +189,10 @@ class ConvertInclude
             // Encode
             $x = json_encode($value);
 
-            // Revert functions and variables
+            // Revert functions, variables, and commas
             $x = preg_replace('#["]?@@([^"]+)"?#im', '$1', $x);
             $x = str_replace('\/', '/', $x);
+            $x = str_replace('^^^', ',', $x);
 
             // Escape existing singles
             $x = str_replace('\'', '\\\'', $x);
@@ -225,7 +231,6 @@ class ConvertInclude
         //         }
         //     }
         // }
-
 
         $value = str_replace($outerValue, '<include component="' . $component . '" ' . $attributes . ' />', $str);
 

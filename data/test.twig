@@ -1,6 +1,9 @@
 <div class="page-explore-index container">
-    {% include "Web/" ~ "View/Explore/Selection/Selection.twig" with {
-        collection: collection,
-        title: 'Explore<br />My Collection',
-    } %}
+    {% if collection.item(0, startIndex) %}
+        {% include "Web/" ~ "View/News/ThumbnailLink/ThumbnailLink.twig" with {
+            type: "style-04",
+            model: collection.item(0, 0),
+            label: collection.item(0).getLabelFromSubtype(),
+        } %}
+    {% endif %}
 </div>
