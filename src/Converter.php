@@ -70,10 +70,11 @@ class Converter
      * Converts a Twig file to VueJS based on filepath or template
      *
      * @param  string $filepathOrTemplate
+     * @param  string $namespace Prefixed to path that should be removed from name
      *
      * @return string
      */
-    public static function convert(string $filepathOrTemplate): string
+    public static function convert(string $filepathOrTemplate, string $namespace = ''): string
     {
         // Parse out comments, methods, tags, and variables
         $parser = new Parser($filepathOrTemplate);
@@ -97,7 +98,7 @@ class Converter
 // echo $qp->html();exit;
 
         // Convert our new XML into a Vue template
-        $vueHtml = $instance->queryPathToVue($qp);
+        $vueHtml = $instance->queryPathToVue($qp, $namespace);
 
         return $vueHtml;
     }
@@ -196,13 +197,13 @@ class Converter
      *
      * @return string
      */
-    public function queryPathToVue(object $queryPath) : string
+    public function queryPathToVue(object $queryPath, string $namespace = ''): string
     {
         $html = XmlToVue\ConvertAttributes::convert($queryPath);
 
         $html = XmlToVue\ConvertLoops::convert($queryPath);
 
-        $html = XmlToVue\ConvertIncludes::convert($queryPath);
+        $html = XmlToVue\ConvertIncludes::convert($queryPath, $namespace);
 
         $html = XmlToVue\ConvertConditionals::convert($queryPath);
 
@@ -242,7 +243,7 @@ class Converter
      *
      * @return string
      */
-    private static function fixAppends(string $value) : string
+    private static function fixAppends(string $value): string
     {
         $value = str_replace(' ~ ', ' + ', $value);
         return $value;
@@ -255,7 +256,7 @@ class Converter
      *
      * @return string
      */
-    private static function fixComments(string $value) : string
+    private static function fixComments(string $value): string
     {
         $value = str_replace('{#', '<!--', $value);
         $value = str_replace('#}', '-->', $value);
@@ -270,7 +271,7 @@ class Converter
      *
      * @return string
      */
-    private static function xmlEscape(string $string) : string
+    private static function xmlEscape(string $string): string
     {
         return str_replace(
             array('&'),

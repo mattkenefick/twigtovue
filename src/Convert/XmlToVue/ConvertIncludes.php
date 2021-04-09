@@ -21,7 +21,6 @@ use PolymerMallard\TwigToVue\Util;
  */
 class ConvertIncludes
 {
-
     /**
      * Convert
      *
@@ -32,13 +31,16 @@ class ConvertIncludes
      *
      * @return string
      */
-    public static function convert(object $queryPath) : string
+    public static function convert(object $queryPath, string $namespace = ''): string
     {
         // Apply for includes
         foreach ($queryPath->find('include') as $item) {
             $component = $item->attr('component');
             $attributes = $item->attr();
             array_shift($attributes);
+
+            // Extract namespace from the component name
+            $component = preg_replace('/^(' . $namespace . ')/', '', $component);
 
             // Add attributes
             $item->after('<' . $component . ' />');
@@ -56,5 +58,4 @@ class ConvertIncludes
 
         return $queryPath->html() ?: '';
     }
-
 }
