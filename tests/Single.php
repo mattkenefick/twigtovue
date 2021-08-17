@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PolymerMallard\TwigToVue\Test;
 
 use PolymerMallard\TwigToVue\Converter;
-use PolymerMallard\TwigToVue\Parser;
 
 /**
  * This test is used to isolate testing for better readability
@@ -40,7 +39,8 @@ class Single extends \PHPUnit\Framework\TestCase
         // $vueHtml = Converter::convert('data/basic-include.twig');
         // $vueHtml = Converter::convert('data/basic-loop-if.twig');
         // $vueHtml = Converter::convert('data/basic-loop.twig');
-        $vueHtml = Converter::convert('data/include-objects.twig', 'Web|Cms');
+        $vueHtml = Converter::convert('data/basic-concatenation.twig');
+        // $vueHtml = Converter::convert('data/include-objects.twig', 'Web|Cms');
         // $vueHtml = Converter::convert('data/include-objects-2.twig');
         // $vueHtml = Converter::convert('data/if-in-notification.twig');
         // $vueHtml = Converter::convert('data/basic-if-else.twig');

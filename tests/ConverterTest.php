@@ -145,7 +145,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     {
         $vueHtml = Converter::convert('data/kitchen-sink.twig');
 
-        $a1 = '<HeaderMain';
+        $a1 = '<ViewHeaderMain';
         $b1 = $vueHtml;
 
         $a2 = '<ViewFooterMain';
@@ -166,7 +166,23 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     {
         $vueHtml = Converter::convert('data/kitchen-sink.twig');
 
-        $a = '<ViewFilmIndex :films="[]"></ViewFilmIndex>';
+        $a = '<WebViewFilmIndex :films="[]"></WebViewFilmIndex>';
+        $b = $vueHtml;
+
+        $this->assertStringContainsString($a, $b);
+    }
+
+
+    /**
+     * Tests if concatenation like "xyz" ~ model.id ~ "123" will work
+     *
+     * @return void
+     */
+    public function testConcatenatedStrings()
+    {
+        $vueHtml = Converter::convert('data/basic-concatenation.twig');
+
+        $a = "'/account/films/' + model.id + '/settings'";
         $b = $vueHtml;
 
         $this->assertStringContainsString($a, $b);

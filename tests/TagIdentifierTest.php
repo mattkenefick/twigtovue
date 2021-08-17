@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace PolymerMallard\TwigToVue\Test;
 
-use PolymerMallard\TwigToVue\Converter;
-use PolymerMallard\TwigToVue\Parser;
 use PolymerMallard\TwigToVue\TagIdentifier;
 
 /**

@@ -21,7 +21,6 @@ use PolymerMallard\TwigToVue\Util;
  */
 class ConvertInclude
 {
-
     /**
      * Prevents us from creating attributes for object references
      * and only allows literal values, like :property="'String'"
@@ -64,8 +63,11 @@ class ConvertInclude
      */
     private static function convertInclude(string $str, string $outerValue, string $attributeValue) : string
     {
+        preg_match('/["\']([^"\']+)/', $attributeValue, $matches);
+        $url = $matches[1];
+
         // Take the latter half of the concatenation to simplify the regex
-        $a = strpos($attributeValue, ' ~ ') > 1
+        $a = strpos($url, ' ~ ') > 1
             ? substr($attributeValue, strpos($attributeValue, ' ~ ') + 3)
             : $attributeValue;
 

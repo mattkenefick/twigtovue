@@ -1,0 +1,16 @@
+
+{% include "Web/View/Component/ThumbnailLink/ThumbnailLink.twig" with {
+    defaultImage: {
+        src: imageUrl('/generic/film-thumbnail.svg'),
+    },
+    image: {
+        src: model.media.getThumbnailUrl(),
+    },
+    link: {
+        href: "/account/films/" ~ model.id ~ "/settings",
+        title: "Edit film",
+    },
+    userProfile: model.owner,
+    title: model.content.getTitle(),
+    type: "small",
+} %}
