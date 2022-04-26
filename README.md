@@ -1,7 +1,6 @@
-
 <img src="./assets/repo/logo-hero.jpg"
-    alt="TwigToVue"
     align="center"
+    alt="TwigToVue"
     height="240"
     />
 
@@ -14,11 +13,9 @@
     <img src="https://img.shields.io/twitter/follow/mattkenefick.svg?style=social&logo=twitter" alt="follow on Twitter"></a>
 </a>
 
-
 ## Install
 
     $ composer require twigtovue
-
 
 ## Test
 
@@ -26,11 +23,9 @@
 
     $ composer test-one
 
-
 ## Configure
 
     $ composer install
-
 
 ### Namespacing
 
@@ -42,12 +37,10 @@ Separate include strings to break out namespacing of Vue class name.
 TwigToVue will use the last string, so the example above will look for
 ViewFilmIndex.
 
-
 ### Duplicate Names
 
 Duplicate names are automatically stripped from includes. In the
 above example, "index/index.twig" becomes `ViewFilmIndex`.
-
 
 ## License
 

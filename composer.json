@@ -26,11 +26,11 @@
 	"description": "Convert Twig templates to Vue templates",
 	"homepage": "https://polymermallard.com",
 	"keywords": [
-		"twig",
-		"vue",
+		"html",
 		"symfony",
 		"template",
-		"html"
+		"twig",
+		"vue"
 	],
 	"license": "MIT",
 	"name": "mattkenefick/twigtovue",
