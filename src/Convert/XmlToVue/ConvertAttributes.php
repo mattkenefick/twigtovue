@@ -62,7 +62,7 @@ class ConvertAttributes
                 $attributeValue = $element->attr($attribute);
 
                 // Set values
-                $newAttribute = ':' . $attribute;
+                $newAttribute = strpos($attribute, 'v-') === 0 ? $attribute : ':' . $attribute;
                 $newValue = $attributeValue;
                 // $newValue = Util\StringUtility::removeTags($attributeValue);
 
@@ -85,7 +85,9 @@ class ConvertAttributes
                 $element->attr($newAttribute, $newValue);
 
                 // Remove old attribute
-                $element->removeAttr($attribute);
+				if ($attribute !== $newAttribute) {
+                	$element->removeAttr($attribute);
+				}
             }
         }
 
