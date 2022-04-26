@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace PolymerMallard\TwigToVue\Convert\XmlToVue;
 
-use PolymerMallard\TwigToVue\Util;
-
 /**
  * Converter
  */
@@ -37,16 +35,20 @@ class ConvertLoops
         // Apply for loops
         foreach ($queryPath->find('for') as $item) {
             $iterator = $item->attr('iterator');
-            preg_match('#([^ ]+) (?:of|in) (.*)$#U', $iterator, $matches);
-            list($original, $model, $collection) = $matches;
+            preg_match('#([^ ]+)?(?:, ?)?([^ ]+) (?:of|in) (.*)$#U', $iterator, $matches);
+			list($original, $key, $model, $collection) = $matches;
+
+			if (empty($key)) {
+				$key = 'index';
+			}
 
             // Get child
             $child = $item->children()->first();
 
             // Apply
-            $attributeValue = "($model, index) of $collection";
+            $attributeValue = "($model, $key) of $collection";
             $child->attr('v-for', $attributeValue);
-            $child->attr('v-bind:key', "index");
+            $child->attr('v-bind:key', $key);
 
             // Remove the for loop
             $child->unwrap();
