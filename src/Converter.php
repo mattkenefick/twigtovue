@@ -99,6 +99,7 @@ class Converter
 
         // Convert our new XML into a Vue template
         $vueHtml = $instance->queryPathToVue($qp, $namespace);
+// echo $vueHtml;exit;
 
         return $vueHtml;
     }
@@ -199,7 +200,7 @@ class Converter
      */
     public function queryPathToVue(object $queryPath, string $namespace = ''): string
     {
-        $html = XmlToVue\ConvertAttributes::convert($queryPath);
+		$html = XmlToVue\ConvertAttributes::convert($queryPath);
 
         $html = XmlToVue\ConvertLoops::convert($queryPath);
 
