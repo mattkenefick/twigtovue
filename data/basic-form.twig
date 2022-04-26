@@ -1,0 +1,25 @@
+<form>
+	{% for key, value in list %}
+		<input
+			checked="{{ isChecked }}"
+			name="film[hide_overlay]"
+			type="checkbox"
+			value="1"
+			v-model="{{ isChecked }}"
+			v-bind:key="{{ index }}"
+			test="{{ value }}"
+			/>
+	{% endfor %}
+
+	<hr />
+
+	{% for value in list %}
+		<input
+			checked="{{ isChecked }}"
+			name="film[hide_overlay]"
+			type="checkbox"
+			value="1"
+			test="{{ value }}"
+			/>
+	{% endfor %}
+</form>

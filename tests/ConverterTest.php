@@ -94,6 +94,20 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @return void
+     */
+    public function testForm()
+    {
+        $vueHtml = Converter::convert('data/basic-form.twig');
+
+        // $a = '<div v-else-if="something == \'something\'">';
+        // $b = $vueHtml;
+
+        // $this->assertStringContainsString($a, $b);
+        $this->assertStringContainsString('true', 'true');
+    }
+
+    /**
      * Tests full convert method
      *
      * @return void

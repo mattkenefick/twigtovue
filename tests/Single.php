@@ -36,10 +36,11 @@ class Single extends \PHPUnit\Framework\TestCase
         // $vueHtml = Converter::convert('<div>{# Sup Homie #}</div>');
         // $vueHtml = Converter::convert('data/pagination.twig');
         // $vueHtml = Converter::convert('data/interpolated-attributes.twig');
+        $vueHtml = Converter::convert('data/basic-form.twig');
         // $vueHtml = Converter::convert('data/basic-include.twig');
         // $vueHtml = Converter::convert('data/basic-loop-if.twig');
         // $vueHtml = Converter::convert('data/basic-loop.twig');
-        $vueHtml = Converter::convert('data/basic-concatenation.twig');
+        // $vueHtml = Converter::convert('data/basic-concatenation.twig');
         // $vueHtml = Converter::convert('data/include-objects.twig', 'Web|Cms');
         // $vueHtml = Converter::convert('data/include-objects-2.twig');
         // $vueHtml = Converter::convert('data/if-in-notification.twig');
