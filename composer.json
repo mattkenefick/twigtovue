@@ -1,50 +1,50 @@
 {
-    "name": "mattkenefick/twigtovue",
-    "type": "library",
-    "description": "Convert Twig templates to Vue templates",
-    "keywords": [
-        "twig",
-        "vue",
-        "symfony",
-        "template",
-        "html"
-    ],
-    "homepage": "https://polymermallard.com",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Matt Kenefick",
-            "email": "matt@polymermallard.com",
-            "homepage": "https://www.mattkenefick.com",
-            "role": "Developer"
-        }
-    ],
-    "config": {
-        "sort-packages": true
-    },
-    "require": {
-        "php": ">=5.4",
-        "querypath/querypath": "^3.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~9.0"
-    },
-    "autoload": {
-        "files": [
-            "src/functions.php"
-        ],
-        "psr-4": {
-            "PolymerMallard\\TwigToVue\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "PolymerMallard\\TwigToVue\\Test\\": "test"
-        }
-    },
-    "scripts": {
-        "phpunit": "php vendor/phpunit/phpunit/phpunit",
-        "test": "phpunit --verbose tests --testdox",
-        "test-one": "php vendor/phpunit/phpunit/phpunit tests/Single.php"
-    }
+	"authors": [
+		{
+			"email": "matt@polymermallard.com",
+			"homepage": "https://www.mattkenefick.com",
+			"name": "Matt Kenefick",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"files": [
+			"src/functions.php"
+		],
+		"psr-4": {
+			"PolymerMallard\\TwigToVue\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"PolymerMallard\\TwigToVue\\Test\\": "test"
+		}
+	},
+	"config": {
+		"sort-packages": true
+	},
+	"description": "Convert Twig templates to Vue templates",
+	"homepage": "https://polymermallard.com",
+	"keywords": [
+		"twig",
+		"vue",
+		"symfony",
+		"template",
+		"html"
+	],
+	"license": "MIT",
+	"name": "mattkenefick/twigtovue",
+	"require": {
+		"php": ">=5.4",
+		"querypath/querypath": "^3.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~9.0"
+	},
+	"scripts": {
+		"phpunit": "php vendor/phpunit/phpunit/phpunit",
+		"test": "phpunit --verbose tests --testdox",
+		"test-one": "php vendor/phpunit/phpunit/phpunit tests/Single.php"
+	},
+	"type": "library"
 }
